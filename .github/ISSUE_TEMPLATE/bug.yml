@@ -1,0 +1,39 @@
+name: Bug report
+description: Phoenix reports something wrong, misses an expiring entry, or crashes.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the test code and the full panic or report output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: A small contract and test that shows the problem, or a link to a public repo.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: phoenix-ttl version
+      placeholder: "v0.1.0 or commit SHA"
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: soroban-sdk version
+      placeholder: "29.0.1"
+    validations:
+      required: true

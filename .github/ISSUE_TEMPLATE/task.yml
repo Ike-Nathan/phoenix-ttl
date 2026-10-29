@@ -1,0 +1,58 @@
+name: Task
+description: A scoped piece of work for a contributor (maintainers create these).
+title: "[Task]: "
+labels: ["help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tasks are scoped so they fit in one pull request. **Comment to ask to be assigned and wait for assignment before starting.** See CONTRIBUTING.md.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should change, and why?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and pointers
+      description: Files to touch, functions involved, and anything explicitly out of scope.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: A checklist the PR must satisfy.
+      value: |
+        - [ ] 
+        - [ ] Tests added or updated
+        - [ ] Docs and CHANGELOG updated if behaviour changes
+    validations:
+      required: true
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexity
+      description: Sets the Drips Wave points (Trivial 100, Medium 150, High 200).
+      options:
+        - Trivial
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - checks (lib.rs)
+        - collection (entry.rs)
+        - reports
+        - docs
+        - examples
+        - ci
+    validations:
+      required: true
