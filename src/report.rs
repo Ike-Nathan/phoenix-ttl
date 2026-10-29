@@ -115,8 +115,9 @@ fn table(f: &mut fmt::Formatter<'_>, entries: &[TtlEntry], current: u32, spl: u6
             };
             let when = match e.remaining(current) {
                 Some(r) => format!(
-                    "{lost} at ledger {} (in {r} ledgers, {})",
+                    "{lost} at ledger {} (in {} ledgers, {})",
                     u64::from(e.live_until) + 1,
+                    u64::from(r) + 1,
                     describe(u64::from(r) + 1, spl)
                 ),
                 None => format!(
@@ -179,4 +180,56 @@ fn hint(f: &mut fmt::Formatter<'_>, entries: &[TtlEntry]) -> fmt::Result {
         f,
         "  On a real network, archived entries must be restored (paying fees) before use; see https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival"
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn entry(kind: EntryKind, live_until: u32) -> TtlEntry {
+        TtlEntry {
+            kind,
+            contracts: vec!["CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4".into()],
+            key: "Shares(CAAA…K3IM)".into(),
+            live_until,
+        }
+    }
+
+    #[test]
+    fn counts_ledgers_up_to_the_archival_ledger() {
+        let r = TtlReport {
+            current: 0,
+            required: Some(100),
+            entries: vec![entry(EntryKind::Persistent, 10)],
+            seconds_per_ledger: 5,
+        };
+        let text = r.to_string();
+        assert!(
+            text.contains("1 entry will not stay live for 100 ledgers"),
+            "{text}"
+        );
+        assert!(
+            text.contains("archived at ledger 11 (in 11 ledgers, ≈ 0.9 minutes)"),
+            "{text}"
+        );
+        assert!(
+            text.contains("CAAA…ITA4  persistent  Shares(CAAA…K3IM)"),
+            "{text}"
+        );
+        assert!(text.contains("persistent().extend_ttl"), "{text}");
+        assert!(!text.contains("instance().extend_ttl"), "{text}");
+    }
+
+    #[test]
+    fn temporary_entries_are_deleted_not_archived() {
+        let r = TtlReport {
+            current: 50,
+            required: Some(1),
+            entries: vec![entry(EntryKind::Temporary, 20)],
+            seconds_per_ledger: 5,
+        };
+        let text = r.to_string();
+        assert!(text.contains("already deleted since ledger 21"), "{text}");
+        assert!(text.contains("expiry deletes the entry for good"), "{text}");
+    }
 }
