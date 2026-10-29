@@ -1,0 +1,33 @@
+[package]
+name = "phoenix-ttl"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.84"
+description = "TTL-safety tests for Soroban contracts: assert that your contract keeps its own state from being archived."
+license = "Apache-2.0"
+repository = "https://github.com/Ike-Nathan/phoenix-ttl"
+homepage = "https://github.com/Ike-Nathan/phoenix-ttl"
+documentation = "https://docs.rs/phoenix-ttl"
+readme = "README.md"
+keywords = ["soroban", "stellar", "testing", "ttl", "smart-contracts"]
+categories = ["development-tools::testing", "cryptography::cryptocurrencies"]
+exclude = [".github/", "examples/", "docs/"]
+
+[dependencies]
+soroban-sdk = { version = "29.0.1", features = ["testutils"] }
+
+[dev-dependencies]
+soroban-sdk = { version = "29.0.1", features = ["testutils"] }
+
+[workspace]
+members = [".", "examples/vault"]
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true
