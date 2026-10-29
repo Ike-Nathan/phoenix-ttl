@@ -2,7 +2,7 @@
 name = "phoenix-ttl"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.84"
+rust-version = "1.91"
 description = "TTL-safety tests for Soroban contracts: assert that your contract keeps its own state from being archived."
 license = "Apache-2.0"
 repository = "https://github.com/Ike-Nathan/phoenix-ttl"
