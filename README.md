@@ -101,7 +101,7 @@ Full reference: [docs/api.md](docs/api.md), and rustdoc via `cargo doc --open`.
 
 Phoenix is **v0.1**. It works on its own tests and the example, and has not yet been used on large production contracts.
 
-- **Targets soroban-sdk 29.0.1** (protocol 29) and needs Rust 1.91 or later, as the SDK does. Cargo resolves any 29.x SDK in your project to the same version. Other major SDK versions are not supported yet.
+- **Targets soroban-sdk 29.0.1** (protocol 29) and needs Rust 1.91 or later, as the SDK does. Cargo resolves any 29.x SDK in your project to the same version. Other major SDK versions are not supported yet. CI also runs the full test suite against soroban-sdk 30.0.0-rc.1, where it currently passes unchanged; the dependency range will be widened once 30.0.0 is released.
 - **The test environment's TTL limits are not the network's.** A default `Env` uses a minimum persistent TTL of 4,096 ledgers and a maximum of 6,312,000. Real networks use different values that change through upgrades. If your contract depends on them, set them on the test ledger with `env.ledger().set_min_persistent_entry_ttl(…)` and related setters, using the [current network settings](https://developers.stellar.org/docs/networks/resource-limits-fees).
 - **Time conversions are estimates.** `days()` and the report's "≈" values assume 5-second ledgers. Real close times vary.
 - **Simulations only cover what you simulate.** A passing `assert_survives` means "this usage pattern keeps state alive", not "state can never be archived".
