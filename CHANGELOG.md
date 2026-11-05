@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Added
+
+- CI job that runs the test suite against soroban-sdk 30.0.0-rc.1 (non-blocking early warning).
+- Dependabot for Cargo and GitHub Actions.
+
 ## [0.1.0] - 2026-10-29
 
 ### Added
