@@ -37,3 +37,22 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.91
       - uses: Swatinem/rust-cache@v2
       - run: cargo test -p phoenix-ttl
+
+  sdk-next:
+    name: Next soroban-sdk (30.0.0-rc.1)
+    runs-on: ubuntu-latest
+    # Early warning only: a release candidate may change before the final release.
+    continue-on-error: true
+    env:
+      SDK_NEXT: 30.0.0-rc.1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: sdk-next
+      - name: Point every soroban-sdk requirement at the next version
+        run: sed -i "s/\"29\.0\.1\"/\"=${SDK_NEXT}\"/" Cargo.toml examples/vault/Cargo.toml
+      - run: cargo update -p soroban-sdk
+      - run: cargo tree -p phoenix-ttl -i soroban-sdk --depth 0
+      - run: cargo test --workspace
